@@ -268,6 +268,10 @@ function lookup_knowledge(c) {
   return undefined;
 }
 
+//find_quips(c,t) input: c, character string; t, thing string
+// output: array of quip objects
+//returns undefined no topic for specific character
+//assumes knowledge base is declared for every character
 function find_quips(c, t) {
   for(var i = 0; i < character_knowledge.length; i++) {
     if(character_knowledge[i].character == c) { 
@@ -283,10 +287,10 @@ function find_quips(c, t) {
   //console.log("Couldn't find knowledge for character " + c);
   return undefined;
 }
-//find_quips(c,t) output: array of quip objects, input: c, character string; t, thing string
-//returns undefined no topic for specifc character
-//assumes knowledge base is declared for every character
 
+//check_people_told(c, quip_Array) input: c, character string who you are checking if told, quip_Array is an array of quips from character knowledge
+//output: a quip object
+//returns undefined if all quips have been said to character c
 function check_people_told(c, quip_Array) {
   for(var i = 0; i < quip_Array.length; i++){
     if(quip_Array[i].people_told.length == 0) {
@@ -306,11 +310,7 @@ function check_people_told(c, quip_Array) {
   }
   return undefined;
 }
-//check_people_told(c, quip_Array) output: a quip object, input: c, character string who you are checking if told
-//input: quip_Array is an array of quips from character knowledge
-//returns undefined if all quips have been said to character c
 
-//check_people_told
 var descriptions =
   [{ thing: "William Hang", descr: "The town cook. He was the last person at the scene of the crime." },
   { thing: "Firehouse", descr: "The town's firehouse. A nearby ditch houses a water valve." },
@@ -681,6 +681,8 @@ function begin() {
   render(); 
 }
 
+//ask(agent, npc, topic) input: agent string, npc string, topic string
+//output { applies: boolean, effects: () -> string, text: string }
 function ask(agent, npc, topic) {
   var applies = (location_of[agent] == location_of[npc]) && (topics[topic] == "known") &&
                 (find_quips(npc, topic)!= undefined) && (check_people_told(agent, find_quips(npc, topic)) != undefined);
@@ -696,7 +698,8 @@ function ask(agent, npc, topic) {
   return { applies: applies, effects: effects, text: text };
 }
 
-
+//tell(agent, npc, topic) input: agent string, npc string, topic string
+//output { applies: boolean, effects: () -> string, text: string }
 function tell(agent, npc, topic) {
   var applies = (location_of[agent] == location_of[npc]) && (find_quips(agent, topic)!= undefined) && 
                 (check_people_told(npc, find_quips(agent, topic)) != undefined) && (topics[topic] == "known");
@@ -717,6 +720,8 @@ return { applies: applies, effects: effects, text: text };
 }
 
 
+//take(agent, thing) input: agent string, thing string
+//output { applies: boolean, effects: () -> string, text: string }
 function take(agent, thing) {
 
   var applies = (location_of[agent] == location_of[thing]) && (characters.indexOf(thing) < 0) &&
@@ -767,7 +772,8 @@ function take(agent, thing) {
 
 }
 
-
+//go(agent, place) input: agent string, place string
+//output { applies: boolean, effects: () -> string, text: string }
 function go(agent, place) {
 
   var applies = location_of[agent] != place;
@@ -881,6 +887,8 @@ function go(agent, place) {
 
 }
 
+//wear(agent, thing) input: agent string, thing string
+//output { applies: boolean, effects: () -> string, text: string }
 function wear(agent, thing) {
 
   var applies = (agent == location_of[thing]) && (clothing_on(agent) != thing);
@@ -904,6 +912,8 @@ function wear(agent, thing) {
 
 }
 
+//talk(agent1, agent2) input: agent1 string, agent2 string
+//output: { applies: boolean, effects: () -> string, text: string }
 function talk(agent1, agent2) {
 
   var loc = location_of[agent1];
@@ -1028,6 +1038,8 @@ function talk(agent1, agent2) {
   return { applies: applies, effects: effects, text: text };
 }
 
+//give(agent1, agent2, thing) input: agent1 string, agent2 string, thing string
+//output: { applies: boolean, effects: () -> string, text: string }
 function give(agent1, agent2, thing) {
 
   var loc = location_of[agent1];
@@ -1070,6 +1082,8 @@ function give(agent1, agent2, thing) {
   return { applies: applies, effects: effects, text: text };
 }
 
+//examine(agent, thing) input: agent string, thing string
+//output: { applies: boolean, effects: () -> string, text: string }
 function examine(agent, thing) { //add to knowledge base
   
   applies = location_of[thing] == agent;
@@ -1103,6 +1117,8 @@ function examine(agent, thing) { //add to knowledge base
   return { applies: applies, effects: effects, text: text };
 }
 
+//open(agent, thing) input: agent string, thing string
+//output: { applies: boolean, effects: () -> string, text: string }
 function open(agent, thing) {
   
   var applies = location_of[agent] == closed_objects[thing];
