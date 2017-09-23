@@ -246,24 +246,22 @@ var sj_knowledge =
 
 var character_knowledge = 
 [
-  {character: "You", knowledge: you_knowledge},
-  {character: "William Hang", knowledge: hang_knowledge},
-  {character: "JS Cain", knowledge: cain_knowledge},
-  {character: "Pat Wesley", knowledge: wesley_knowledge},
-  {character: "Sheriff Hayes", knowledge: hayes_knowledge},
-  {character: "Mr. Perry", knowledge: mr_perry_knowledge},
-  {character: "Mrs. Perry", knowledge: mrs_perry_knowledge},
-  {character: "Shotgun Johnny", knowledge: sj_knowledge}
+  {"You": you_knowledge},
+  {"William Hang": hang_knowledge},
+  {"JS Cain": cain_knowledge},
+  {"Pat Wesley": wesley_knowledge},
+  {"Sheriff Hayes": hayes_knowledge},
+  {"Mr. Perry": mr_perry_knowledge},
+  {"Mrs. Perry": mrs_perry_knowledge},
+  {"Shotgun Johnny": sj_knowledge}
 ]
 
 // lookup_knowledge(c) input: character string, output: knowledge object for specific character
 // returns undefined if no knowledge base for character 
 function lookup_knowledge(c) {
-  for(var i = 0; i < character_knowledge.length; i++) {
-    if(character_knowledge[i].character == c) {
-      return character_knowledge[i].knowledge;
+    if(character_knowledge[c]) {
+      return character_knowledge[c];
     }
-  }
   console.log("Couldn't find knowledge for character " + c);
   return undefined;
 }
@@ -273,9 +271,8 @@ function lookup_knowledge(c) {
 //returns undefined no topic for specific character
 //assumes knowledge base is declared for every character
 function find_quips(c, t) {
-  for(var i = 0; i < character_knowledge.length; i++) {
-    if(character_knowledge[i].character == c) { 
-      var charknowledge = character_knowledge[i].knowledge;
+    if(character_knowledge[c]) {
+      var charknowledge = character_knowledge[c];
       for(var j = 0; j < charknowledge.length; j++) {
         if (charknowledge[j].topic == t) {
           return charknowledge[j].quips;
@@ -283,7 +280,6 @@ function find_quips(c, t) {
       }
       //console.log("Couldn't find quips for topic " + t);
     }
-  }
   //console.log("Couldn't find knowledge for character " + c);
   return undefined;
 }
@@ -327,8 +323,6 @@ var inventory =
   [{ thing: "Town Hall", descr: "The center of the town of Bodie. The Sheriff is usually here." },
   { thing: "Sheriff Hayes", descr: "The town's Sheriff. You met him when you first arrived. If you need a hint, see him at the Town Hall." },
   ];
-
-var i = 0;
 
 var npc_plans =
   {
@@ -496,7 +490,7 @@ function render() {
 // advanceNPCs() no input or output
 // Has all NPCs perform their next applicable action
 function advanceNPCs() {
-  for (p in npc_plans) {
+  for (var p in npc_plans) {
     var plan = npc_plans[p];
     if (plan.length > 0 && cmdToAction(plan[0]).applies) {
       if (plan[0].hasOwnProperty("status")) {
