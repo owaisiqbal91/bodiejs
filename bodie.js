@@ -448,7 +448,7 @@ function displayInventory() {
 function describeThing(t) {
   var display_text = inventory[t].descr;
   document.getElementById("description").innerHTML = display_text;
-  render();
+  //render();
 }
 
 // displayChoices() No input or direct output
@@ -574,6 +574,9 @@ function cmdToAction(cmd) {
     case "open": {
       return open(args[0], args[1]);
     }
+	case "accuse": {
+		return accuse(args[0], args[1]);
+	}
     default: return undefined;
   }
 }
@@ -608,6 +611,18 @@ function whatsAt(loc) {
 // output: array of command options
 function generate_choices() {
   choices = [];
+  /*
+  if (knowledge["You"] == "known" && location_of("You") == location_of("Sheriff Hayes")) {
+	choices.push({op: "accuse", args: ["William Hang", ""});
+    if (knowledge["Hat"] == "known") {
+      choices.push({op: "accuse", args: ["Shotgun Johnny", ""});
+    }
+    if ((knowledge["Letter"] == "known") && (knowledge["Insurance"] == "known")) {
+      choices.push({op: "accuse", args: ["Shotgun Johnny", "Perrys"});
+    }
+  }
+  */
+  
   // for each character, see what they can do
   for (var ci in characters) {
     var c = characters[ci];
@@ -958,15 +973,6 @@ function talk(agent1, agent2) {
               "Here's the key.</q></br ></br >You pocket it.";
             knowledge["You"] = "known";
           }
-          else if (knowledge["You"] == "known") {
-            text = "Congratulations you have enough evidence to accuse William Hang of arson.</br></br>";
-            if (knowledge["Hat"] == "known") {
-              text += "Congratulations you have enough evidence to accuse Shotgun Johnny of arson.</br></br>";
-            }
-            if ((knowledge["Letter"] == "known") && (knowledge["Insurance"] == "known")) {
-              text += "Congratulations you have enough evidence to accuse Shotgun Johnny and the Perrys of arson.</br></br>"
-            }
-          }
         }
         else if (knowledge["Firehouse"] == "known") {
           text = "You ask the Sheriff to unlock the firehouse.</br></br > " +
@@ -1101,6 +1107,33 @@ function give(agent1, agent2, thing) {
     return text;
   }
 
+  return { applies: applies, effects: effects, text: text };
+}
+
+//accuse(agent1, agent2) input: agent1 string, agent2 string
+//output: { applies: boolean, effects: () -> string, text: string }
+function accuse(agent1, agent2) {
+  var text = "";
+  var applies = agent1 != agent2;
+  function effects(){
+	var text = "";
+	if (agent1 == "William Hang") {
+	  text = "</br>You beleive that the sherriff had it right all along and that " +
+	  "the arsonist was Hang. As you watch Sherrif Hayes load up Hang to be " + 
+	  "transported to prison you have a nagging suspicion that maybe you " +
+	  "missed something.";
+	}
+	else if (agent1 == "Shotgun Johnny" && agent2 == "Perrys") {
+	  text = "</br>After your thorough investigation of the town you feel " +
+	  "confident when you tell sheriff Hayes that the Perrys had conspired " +
+	  "with Shotgun Johnny.";
+	}
+	else{
+	  text = "</br>You accuse Shotgun Johnny, with plenty of evidence aginst him." +
+	  "However, you can't shake the feeling that he didn't work alone.";
+	}
+	return text;
+  }
   return { applies: applies, effects: effects, text: text };
 }
 
