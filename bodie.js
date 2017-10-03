@@ -256,6 +256,8 @@ var character_knowledge =
   {"Shotgun Johnny": sj_knowledge}
 ]
 
+var ending = false;
+
 // lookup_knowledge(c) input: character string, output: knowledge object for specific character
 // returns undefined if no knowledge base for character 
 function lookup_knowledge(c) {
@@ -386,6 +388,12 @@ function choiceToString(c) {
     case "open": {
       return "Open " + args[1];
     }
+	case "accuse": {
+		if (args[2] == ""){
+			return "Accuse " + args[1];
+		}
+		return "Accuse " + args[1] + " and " + args[2];
+	}
     default: return op + " " + args[args.length - 1];
   }
 }
@@ -395,6 +403,13 @@ function choiceToString(c) {
 function displayState() {
   toRender = "";
   state = [];
+  
+  if (ending){
+	document.getElementById("col1").innerHTML = "";
+	document.getElementById("col2").innerHTML = "";
+	return;
+  }
+  
   // stuff at all locations
   for (var i = 0; i < locations.length; i++) {
     var stuff = whatsAt(locations[i]);
@@ -420,6 +435,11 @@ function displayState() {
 // updates html code with items in player's inventory
 function displayInventory() {
   toRender = "Information<br>";
+  
+  if (ending){
+	document.getElementById("information").innerHTML = "";
+	return;
+  }
   
   for (var i = 0; i < inventory.length; i++) {
     toRender += "<a onclick=describeThing(" + i + ") href=javascript:void(0);>" + inventory[i].thing + "<br>";
@@ -455,8 +475,16 @@ function describeThing(t) {
 // Updates html code with possible choices the player can choose to make right now
 function displayChoices() {
   // current_choices = generate_choices();
+  
+
+  
   toRenderAction = "";
   toRenderConversation = "";
+  if (ending){
+	document.getElementById("actions").innerHTML = "";
+	document.getElementById("conversation").innerHTML = "";
+	return;
+  }
   for (var i = 0; i < current_choices.length; i++) {
     var choice = current_choices[i];
     var last_character;
@@ -485,6 +513,15 @@ function render() {
   displayState();
   displayInventory();
   displayChoices();
+}
+
+// finalRender() no input or output
+// advances the world to the final state
+function finalRender() {
+	ending = true;
+	displayState();
+	displayInventory();
+	displayChoices();
 }
 
 // advanceNPCs() no input or output
@@ -531,11 +568,18 @@ function checkCondition(npc, plan) {
 //assumes index is within bounds of current_choices
 //updates html code with response to choice
 function selectChoice(index) {
+	
 
   var display_text = applyOper(current_choices[index]);
 
   document.getElementById("response").innerHTML = display_text;
+  
+  var cmd = current_choices[index];
+  var { op, args } = cmd;
 
+  if (op == "accuse"){
+	  finalRender();
+  }
   // current_choices = generate_choices();
   render();
 }
@@ -575,7 +619,7 @@ function cmdToAction(cmd) {
       return open(args[0], args[1]);
     }
 	case "accuse": {
-		return accuse(args[0], args[1]);
+		return accuse(args[1], args[2]);
 	}
     default: return undefined;
   }
@@ -611,17 +655,23 @@ function whatsAt(loc) {
 // output: array of command options
 function generate_choices() {
   choices = [];
-  /*
-  if (knowledge["You"] == "known" && location_of("You") == location_of("Sheriff Hayes")) {
-	choices.push({op: "accuse", args: ["William Hang", ""});
+  
+  if (knowledge["You"] == "known") {
+	  
+	choices.push( { op: "accuse", args: ["You", "William Hang", ""] } );
+	
     if (knowledge["Hat"] == "known") {
-      choices.push({op: "accuse", args: ["Shotgun Johnny", ""});
+		
+      choices.push( { op: "accuse", args: ["You", "Shotgun Johnny", ""] } );
+	  
     }
-    if ((knowledge["Letter"] == "known") && (knowledge["Insurance"] == "known")) {
-      choices.push({op: "accuse", args: ["Shotgun Johnny", "Perrys"});
+	
+    if (knowledge["Letter"] == "known" && knowledge["Insurance"] == "known"  && knowledge["Hat"] == "known") {
+		
+      choices.push( { op: "accuse", args: ["You", "Shotgun Johnny", "The Perrys"] } );
+	  
     }
   }
-  */
   
   // for each character, see what they can do
   for (var ci in characters) {
@@ -1123,7 +1173,7 @@ function accuse(agent1, agent2) {
 	  "transported to prison you have a nagging suspicion that maybe you " +
 	  "missed something.";
 	}
-	else if (agent1 == "Shotgun Johnny" && agent2 == "Perrys") {
+	else if (agent1 == "Shotgun Johnny" && agent2 == "The Perrys") {
 	  text = "</br>After your thorough investigation of the town you feel " +
 	  "confident when you tell sheriff Hayes that the Perrys had conspired " +
 	  "with Shotgun Johnny.";
