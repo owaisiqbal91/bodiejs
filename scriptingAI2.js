@@ -3,26 +3,28 @@ var Status = {
     SUCCESS: 2,
     FAILURE: 3
 };
-function getStatus(boolVal){
-    if(boolVal) return Status.SUCCESS;
+
+function getStatus(boolVal) {
+    if (boolVal) return Status.SUCCESS;
     else return Status.FAILURE;
 }
-function terminateAndReturn(id, status){
+
+function terminateAndReturn(id, status) {
     delete blackboard[id];
     return status;
 }
 
-function getAction(id){
+function getAction(id) {
     return function getActionTick(procedure, ticksRequired = 1) {
         return function tick(blackboard) {
-            if(!blackboard[id]){
+            if (!blackboard[id]) {
                 blackboard[id] = {};
                 blackboard[id].startTick = blackboard.currentWorldTick;
             }
 
-            if(blackboard.currentWorldTick - blackboard[id].startTick < ticksRequired){
+            if (blackboard.currentWorldTick - blackboard[id].startTick < ticksRequired) {
                 return Status.RUNNING;
-            }else{
+            } else {
                 var boolVal = procedure(blackboard);
                 return terminateAndReturn(id, getStatus(boolVal));
             }
@@ -30,9 +32,12 @@ function getAction(id){
     };
 }
 
-function guard(procedure, astTick) {
+function getGuardTick(procedure, astTick, negate) {
     return function tick(blackboard) {
-        if (procedure(blackboard)) {
+        var boolVal = procedure(blackboard);
+        if (negate)
+            boolVal = !boolVal;
+        if (boolVal) {
             return execute(astTick, blackboard);
         } else {
             return Status.FAILURE;
@@ -40,18 +45,18 @@ function guard(procedure, astTick) {
     }
 }
 
-function getSequence(id){
+function getSequence(id) {
     return function getSequenceTick(astTicks) {
         return function tick(blackboard) {
-            if(!blackboard[id]) {
+            if (!blackboard[id]) {
                 blackboard[id] = {};
                 blackboard[id].currentIndex = 0;
             }
 
             while (blackboard[id].currentIndex < astTicks.length) {
-                var childStatus = execute(astTicks[currentIndex], blackboard);
+                var childStatus = execute(astTicks[blackboard[id].currentIndex], blackboard);
 
-                if(childStatus == Status.RUNNING)
+                if (childStatus == Status.RUNNING)
                     return Status.RUNNING;
                 else if (childStatus == Status.FAILURE)
                     return terminateAndReturn(id, Status.FAILURE);
@@ -63,16 +68,53 @@ function getSequence(id){
     }
 }
 
+function getSelector(id) {
+    return function getSelectorTick(astTicks) {
+        return function tick(blackboard) {
+            if (!blackboard[id]) {
+                blackboard[id] = {};
+                blackboard[id].currentIndex = 0;
+            }
+
+            while (blackboard[id].currentIndex < astTicks.length) {
+                var childStatus = execute(astTicks[blackboard[id].currentIndex], blackboard);
+
+                if (childStatus == Status.RUNNING)
+                    return Status.RUNNING;
+                else if (childStatus == Status.SUCCESS)
+                    return terminateAndReturn(id, Status.SUCCESS);
+                else if (childStatus == Status.FAILURE)
+                    blackboard[id].currentIndex += 1;
+            }
+            return terminateAndReturn(id, Status.FAILURE);
+        }
+    }
+}
+
 function execute(astTick, blackboard) {
     return astTick(blackboard);
 }
 
 var globalIdCounter = 0;
+
 function action(procedure, ticksRequired) {
     return getAction(globalIdCounter++)(procedure, ticksRequired);
 }
+
+function guard(procedure, astTick){
+    return getGuardTick(procedure, astTick);
+}
+
+function neg_guard(procedure, astTick) {
+    return getGuardTick(procedure, astTick, true);
+}
+
 function sequence(astTicks) {
     return getSequence(globalIdCounter++)(astTicks);
+}
+
+function selector(astTicks) {
+    return getSelector(globalIdCounter++)(astTicks);
 }
 
 /*--------- CUSTOM -----------*/
@@ -89,8 +131,8 @@ function speak(blackboard) {
     return true;
 }
 
-var a1Tick = action(speak, 0);
-//var gTick = guard(canSpeak, a1Tick);
-//var rootNodeTick = sequence([guard(wantsToSpeak, gTick), action(speak)]);
+var a1Tick = action(speak, 1);
+var gTick = guard(canSpeak, a1Tick);
+var rootNodeTick = selector([neg_guard(wantsToSpeak, gTick), action(speak)]);
 var blackboard = {name: "Owais", currentWorldTick: 1};
-console.log(execute(a1Tick, blackboard));
+//console.log(execute(rootNodeTick, blackboard));
