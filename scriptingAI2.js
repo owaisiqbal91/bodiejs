@@ -163,7 +163,7 @@ world["connected"] = {
 
 world["at"] = {
     "Player" : "Warehouse",
-    "Stranger" : "Side",
+    "Stranger" : "Entrance",
     "Zombie" : "Back",
     "Motorcycle" : "Side",
     "Car" : "Front",
@@ -217,19 +217,18 @@ var zombieTick = selector([
     )
 ]);
 
-/*blackboard.agent = "Zombie";
-blackboard.currentWorldTick = 1;
-console.log(execute(zombieTick, blackboard));
-blackboard.currentWorldTick = 2;
-console.log(execute(zombieTick, blackboard));
-blackboard.currentWorldTick = 3;
-console.log(execute(zombieTick, blackboard));*/
-
+//player tree
 var playerTick = sequence([
     write({fromLocation: "Warehouse", toLocation: "Entrance"},
     guard(canMove, action(moveTo))),
     write({fromLocation: "Entrance", toLocation: "Front"},
     guard(canMove, action(moveTo)))
+]);
+
+//stranger tree
+var strangerTick = sequence([
+    write({fromLocation: "Entrance", toLocation: "Side"},
+        guard(canMove, action(moveTo)))
 ]);
 
 blackboard.currentWorldTick = 0;
@@ -239,10 +238,47 @@ function worldTick(){
     console.log("Current world tick: "+blackboard.currentWorldTick);
     blackboard.agent = "Player";
     execute(playerTick, blackboard);
+    blackboard.agent = "Stranger";
+    execute(strangerTick, blackboard);
     blackboard.agent = "Zombie";
     execute(zombieTick, blackboard);
 }
 
-for(var i=0; i<6; i++){
+/*for(var i=0; i<6; i++){
     worldTick();
+}*/
+
+var canvas = document.getElementById('zombie');
+var context = canvas.getContext('2d');
+var coords = {
+    "Back": {x: 800, y: 20},
+    "Warehouse" : {x: 800, y: 220},
+    "Entrance": {x: 800, y: 420},
+    "Front" : {x: 1000, y: 620},
+    "Side" : {x: 300, y: 620}
 }
+
+canvas.addEventListener("click", this.worldTick.bind(this), false);
+function render(){
+    context.width = context.width;
+    var map = new Image();
+    map.src = "images/zombiemap.png";
+    context.drawImage(map, 0, 0, 1185, 825);
+
+    var zombie = new Image();
+    zombie.src = "images/zombie.png";
+    var zc = coords[world["at"]["Zombie"]];
+    context.drawImage(zombie, zc.x, zc.y, 171, 160);
+
+    var player = new Image();
+    player.src = "images/player.png";
+    var pc = coords[world["at"]["Player"]];
+    context.drawImage(player, pc.x, pc.y, 171, 160);
+
+    var stranger = new Image();
+    stranger.src = "images/stranger.png";
+    var sc = coords[world["at"]["Stranger"]];
+    context.drawImage(stranger, sc.x, sc.y, 171, 160);
+}
+
+setInterval(render, 30);
