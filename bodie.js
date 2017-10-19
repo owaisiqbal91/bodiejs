@@ -80,11 +80,18 @@ var hang_knowledge =
     quips: 
     [
       { 
-      content: "On my way to the bar I passed the firehouse, and heard " +
-               "a voice muttering to itself, 'the prop's to break the line'. " +
-               "I think I know who it was, but he's a dangerous man. I think he " +
-               "saw me that night and I'm sure he'll come for revenge if he knows I sent you. Good luck, friend.",
-      id: "firehouse_tampering",
+      content: "<q>That night, I slipped out of the bakery around 1 AM. Work was especially brutal " +
+				"and I needed some relief. I went to the saloon and drank myself silly, when I heard " +
+				"a commotion outside. I stumbled out and saw the fire ripping through the town. I " +
+				"could see the homes of my people burning on the hill.</q> He chokes on these words, " +
+				"and you see sorrow in his eyes. <q>I ran into the night. Only this morning did I " +
+				"have the guts to investigate. My family was gone, my home torched. I didn't even " +
+				"bother looking inside. That's when the sheriff and his men grabbed me, and threw me " +
+				"in here. On my way to the bar Ipassed the firehouse, and heard a voice muttering " +
+				"to itself, 'the prop's to break the line'. I think I know who it was, but he's a " +
+				"dangerous man. I think he saw me that night and I'm sure he'll come for revenge " +
+				"if he knows I sent you. Good luck, friend.</q>",
+      id: "firehouse_tampering",	  
       people_told: []
       }
     ]
@@ -128,7 +135,9 @@ var you_knowledge =
     ]
   }
 ]
+
 var cain_knowledge = [];
+
 var wesley_knowledge = 
 [
   {
@@ -317,7 +326,7 @@ var descriptions =
   { thing: "Mr. Perry", descr: "A tall confident, man with an eyepatch on one eye. Mono County Supervisor." },
   { thing: "Shotgun Johnny", descr: "A short man with a thick cornish accent. He seems to favor round black hats." },
   { thing: "Hat", descr: "A hat found near the tampered-with water valve. The initials SJ are stitched inside." },
-  { thing: "Insurance", descr: "The insurance document showing a list of losses from the fire." },
+  { thing: "Insurance", descr: "The insurance document showing a list of losses from the fire, the Perry's lost suspiciously less than everyone else" },
   { thing: "Amulet", descr: "A wooden amulet on a twine string. A faded sketch of a girl is inside." }
   ];
 
@@ -334,9 +343,6 @@ var npc_plans =
     { op: "talk", args: ["JS Cain", "Sheriff Hayes"] },
     { op: "go", args: ["JS Cain", "Bank"] },
     { op: "open", args: ["JS Cain", "Bank Safe"] },
-    { op: "take", args: ["JS Cain", "Insurance Paper"] },
-    { op: "examine", args: ["JS Cain", "Insurance Paper"] }//,
-      //{ op: "give", args: ["JS Cain", "You", "Insurance Paper"] }
     ],
     "Shotgun Johnny":
     [{ op: "go", args: ["Shotgun Johnny", ""] },
@@ -449,12 +455,6 @@ function displayInventory() {
   // inventory of knowledge?
   document.getElementById("information").innerHTML = toRender;
 
-  /*for (var key in descriptions) {
-    if (knowledge[key] != "unknown") {
-      inventory.push({ thing: key, descr: descriptions[key] });
-      delete descriptions[key];
-    }
-  }*/
   for (var i = 0; i < descriptions.length; i++) {
     if (knowledge[descriptions[i].thing] != "unknown") {
       inventory.push(descriptions[i]);
@@ -474,10 +474,6 @@ function describeThing(t) {
 // displayChoices() No input or direct output
 // Updates html code with possible choices the player can choose to make right now
 function displayChoices() {
-  // current_choices = generate_choices();
-  
-
-  
   toRenderAction = "";
   toRenderConversation = "";
   if (ending){
@@ -508,6 +504,7 @@ function displayChoices() {
 // render() no input or output
 // advances the world by one turn
 function render() {
+  document.getElementById("description").innerHTML = "";
   advanceNPCs();
   current_choices = generate_choices();
   displayState();
@@ -519,6 +516,7 @@ function render() {
 // advances the world to the final state
 function finalRender() {
 	ending = true;
+	document.getElementById("description").innerHTML = "";
 	displayState();
 	displayInventory();
 	displayChoices();
@@ -656,20 +654,13 @@ function whatsAt(loc) {
 function generate_choices() {
   choices = [];
   
-  if (knowledge["You"] == "known") {
-	  
-	choices.push( { op: "accuse", args: ["You", "William Hang", ""] } );
-	
-    if (knowledge["Hat"] == "known") {
-		
-      choices.push( { op: "accuse", args: ["You", "Shotgun Johnny", ""] } );
-	  
+  if (knowledge["You"] == "known" && location_of["You"] == location_of["Sheriff Hayes"]) {	  
+	choices.push( { op: "accuse", args: ["You", "William Hang", ""] } );	
+    if (knowledge["Hat"] == "known") {	
+      choices.push( { op: "accuse", args: ["You", "Shotgun Johnny", ""] } ); 
     }
-	
-    if (knowledge["Letter"] == "known" && knowledge["Insurance"] == "known"  && knowledge["Hat"] == "known") {
-		
-      choices.push( { op: "accuse", args: ["You", "Shotgun Johnny", "The Perrys"] } );
-	  
+    if (knowledge["Letter"] == "known" && knowledge["Insurance"] == "known"  && knowledge["Hat"] == "known") {	
+      choices.push( { op: "accuse", args: ["You", "Shotgun Johnny", "The Perrys"] } ); 
     }
   }
   
@@ -824,20 +815,6 @@ function take(agent, thing) {
       knowledge["William Hang"] = "has";
       knowledge["Amulet"] = "known";
     }
-
-    if (thing == "Insurance Paper") {
-      text = "</br ></br >JS Cain reaches to his desk and " +
-             "pulls a sheet of paper from a file. <q>Here's a " +
-             "partial list of losses for the citizens of the town. " +
-             "The damage is huge, exceeding 88,000 dollars...</q>" +
-             "</br ></br >" + agent + " take the " + thing + ".</br ></br >" +
-             "Cain continues, <q>I already see something fishy. Notice " +
-             "that Mrs. Perry lost less than almost anyone? Considering " +
-             "that a good number of the lost buildings were in direct " +
-             "competition with Perry... Something seems off. I suggest " +
-             "you look around her bakery.</q>";
-             knowledge["Insurance"] = "known";
-    }
     else if (thing == "Letter") {
       text = "You unfold the letter, and see a sketch of " +
              "something called the U.S. Hotel, along with an " +
@@ -913,7 +890,24 @@ function go(agent, place) {
       }
     }
       else if (place == "Bank") {
-        text = "You enter the imposing Bodie Bank, " +
+		if (knowledge["Insurance"] != "known") {
+		  text = "You enter the imposing Bodie Bank, " +
+          "the most modern and expensive of all " +
+          "the buildings in town. The safe stands " +
+          "severe in the center, between brick and " +
+          "steel bar. Facing the opposite wall is a " +
+          "redwood desk. <br /><br />" +
+
+          "Sitting there is a straight backed man with " +
+          "salt and pepper hair, furiously filing documents " +
+          "and flipping through files. He jerks to a stop as " +
+          "you approach, and stands, stiffly. He turns to you " +
+          "and you notice his gaunt face and pale eyes. <br/><br/> " +
+		  "You remember that Sherrif Hayes told you he had the " +
+		  "insurance document for you.";
+		 }
+		else{ 
+          text = "You enter the imposing Bodie Bank, " +
           "the most modern and expensive of all " +
           "the buildings in town. The safe stands " +
           "severe in the center, between brick and " +
@@ -925,6 +919,8 @@ function go(agent, place) {
           "and flipping through files. He jerks to a stop as " +
           "you approach, and stands, stiffly. He turns to you " +
           "and you notice his gaunt face and pale eyes. ";
+		}
+		 
       }
       else if (place == "Bakery") {
         text = "You enter the ruins of the bakery. Scorched " +
@@ -1108,6 +1104,20 @@ function talk(agent1, agent2) {
           "know? JS Cain likely told you I was up to no good, eh? He's " +
           "hated us for years.</q>";
       }
+	  else if ((agent2 == "JS Cain") && (knowledge["Insurance"] != "known") && (location_of[agent1] == "Bank")) {
+		text = "</br ></br >JS Cain reaches to his desk and " +
+        "pulls a sheet of paper from a file. <q>Here's a " +
+        "partial list of losses for the citizens of the town. " +
+        "The damage is huge, exceeding 88,000 dollars...</q>" +
+        "</br ></br > You take the insurance paper from him.</br ></br >" +
+        "Cain continues, <q>I already see something fishy. Notice " +
+        "that Mrs. Perry lost less than almost anyone? Considering " +
+        "that a good number of the lost buildings were in direct " +
+        "competition with Perry... Something seems off. I suggest " +
+        "you look around her bakery.</q>";
+        knowledge["Insurance"] = "known"; 
+	  }
+	  
     }
 
     return text;
@@ -1151,7 +1161,18 @@ function give(agent1, agent2, thing) {
       text = agent1 + " give " + thing + " to " + agent2;
     }
     if (graveYardAccess > 0) {
-      text += ". </br></br> <b>You now have access to the Graveyard.</b>";
+      text = "You give Hang the amulet and he tells his story of what happend that night. </br></br>" +
+		"<q>That night, I slipped out of the bakery around 1 AM. Work was especially brutal " +
+		"and I needed some relief. I went to the saloon and drank myself silly, when I heard " +
+		"a commotion outside. I stumbled out and saw the fire ripping through the town. I " +
+		"could see the homes of my people burning on the hill.</q> </br></br>He chokes on these words, " +
+		"and you see sorrow in his eyes. </br></br><q>I ran into the night. Only this morning did I " +
+		"have the guts to investigate. My family was gone, my home torched. I didn't even " +
+		"bother looking inside. That's when the sheriff and his men grabbed me, and threw me " +
+		"in here. On my way to the bar I passed the firehouse, and heard a voice muttering " +
+		"to itself, 'the prop's to break the line'. I think I know who it was, but he's a " +
+		"dangerous man. I think he saw me that night and I'm sure he'll come for revenge " +
+		"if he knows I sent you. Good luck, friend.</q></br></br> <b>You now have access to the Graveyard.</b>";
     }
 
     return text;
@@ -1265,7 +1286,7 @@ function open(agent, thing) {
     else if (thing == "Bank Safe") {
       if (agent == "JS Cain") {
         unlocked = true;
-        location_of["Insurance Paper"] = "Bank";
+        //location_of["Insurance Paper"] = "Bank";
         delete closed_objects[thing];
       }
     }
