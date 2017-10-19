@@ -26,7 +26,7 @@ function getAction(id) {
                 return Status.RUNNING;
             } else {
                 var boolVal = procedure(blackboard);
-                return terminateAndReturn(id, getStatus(boolVal));
+                return terminateAndReturn(id, Status.SUCCESS/*getStatus(boolVal)*/);
             }
         }
     };
@@ -118,7 +118,7 @@ function selector(astTicks) {
 }
 
 /*--------- CUSTOM -----------*/
-function canSpeak(blackboard) {
+/*function canSpeak(blackboard) {
     return true;
 }
 
@@ -131,8 +131,76 @@ function speak(blackboard) {
     return true;
 }
 
-var a1Tick = action(speak, 1);
+var a1Tick = action(speak);
 var gTick = guard(canSpeak, a1Tick);
-var rootNodeTick = selector([neg_guard(wantsToSpeak, gTick), action(speak)]);
+var rootNodeTick = selector([guard(wantsToSpeak, gTick), action(speak)]);
 var blackboard = {name: "Owais", currentWorldTick: 1};
-//console.log(execute(rootNodeTick, blackboard));
+console.log(execute(rootNodeTick, blackboard));*/
+
+/*----------- ZOMBIE ESCAPE!!! -------------------*/
+
+var world = {};
+var blackboard = {};
+//initial state
+world["connected"] = {
+    "Back" : ["Warehouse"],
+    "Warehouse" : ["Back", "Entrance"],
+    "Entrance" : ["Warehouse", "Side", "Front"],
+    "Side" : ["Entrance"],
+    "Front" : ["Entrance"]
+};
+
+world["at"] = {
+    "Player" : "Warehouse",
+    "Stranger" : "Entrance",
+    "Zombies" : "Back",
+    "Motorcycle" : "Side",
+    "Car" : "Front",
+    "Gate" : "Front",
+    "Brick" : "Car"
+};
+
+world["is"] = {
+    "Player" : "alive",
+    "Stranger" : "alive",
+    "Gate" : "closed"
+};
+
+world["has"] = {
+    "Stranger" : ["Gas", "Rope"]
+};
+
+function goalState(){
+    return world["escape"] === ["Player", "Stranger"];
+}
+
+//move(Player, Warehouse, Entrance)
+function canMove(blackboard){
+    return world["at"][blackboard.agent] === blackboard.fromLocation
+    && world["connected"][blackboard.fromLocation].includes(blackboard.toLocation);
+}
+function moveTo(blackboard){
+    world["at"][blackboard.agent] = blackboard.toLocation;
+}
+function canEat(blackboard){
+    return world["at"][blackboard.agent] === blackboard["at"]["Stranger"]
+    || world["at"][blackboard.agent] === blackboard["at"]["Player"]
+}
+function eat(blackboard) {
+    console.log("Game Over!")
+}
+
+var move = guard(canMove, moveTo);
+
+//zombie tree
+var zombieTick = sequence([
+    neg_guard(canEat,
+        sequence([
+            move,
+            move
+        ])
+    ),
+    guard(canEat,
+        eat
+    )
+]);
