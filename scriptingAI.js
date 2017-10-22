@@ -4,45 +4,40 @@ var Status = {
     FAILURE: 3
 }
 
-class Node {
-    onTerminate() {
-    }
-}
-
-class Leaf extends Node {
-    constructor(procedure) {
-        super();
+class Action {
+    constructor(procedure){
         this.procedure = procedure;
     }
-}
 
-class Action extends Leaf {
     tick(visitor, blackboard) {
         return this.procedure.apply(this, [visitor, blackboard]);
     }
 }
 
-class Condition extends Leaf {
-    constructor(procedure, invert) {
-        super(procedure);
+class Composite {
+    constructor(children) {
+        this.children = children;
+        this.currentChildIndex = 0;
+    }
+}
+
+class Condition {
+    constructor(procedure, invert, child) {
+        this.child = child;
         this.invert = invert;
+        this.procedure = procedure;
     }
 
     tick(visitor, blackboard) {
         var status = this.procedure.apply(this, [visitor, blackboard]);
-        if (this.invert) {
-            if (status === Status.SUCCESS) return Status.FAILURE;
-            else if (status === Status.FAILURE) return Status.SUCCESS;
-        }
-        return status;
-    }
-}
+        if(status == Status.RUNNING)
+            return status;
 
-class Composite extends Node {
-    constructor(children) {
-        super();
-        this.children = children;
-        this.currentChildIndex = 0;
+        if (status == Status.FAILURE || (this.invert && status == Status.SUCCESS)) {
+            return Status.FAILURE;
+        } else {
+            return this.child.tick(visitor, blackboard);
+        }
     }
 }
 

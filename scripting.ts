@@ -1,31 +1,37 @@
-var debug = false;
+enum Status {
+    RUNNING,
+    SUCCESS,
+    FAILURE
+}
 
-var Status = {
-    RUNNING: 1,
-    SUCCESS: 2,
-    FAILURE: 3
-};
-
-function terminateAndReturn(id, status) {
+function terminateAndReturn(id: number, blackboard: any, status: Status) {
     delete blackboard[id];
     return status;
 }
 
-function getAction(id) {
-    return function getActionTick(precondition, procedure, parameters={}, ticksRequired = 1) {
-        return function tick(blackboard) {
+type Procedure = (params: any) => void
+type Precondition = (params: any) => boolean
+type Tick = (blackboard: any) => Status
+type ActionTick = (precondition: Precondition, procedure: Procedure, parameters?: any, ticksRequired?: number) => Tick
+type GuardTick = (precondition: Precondition, parameters: any, astTick: Tick, negate?: boolean) => Tick
+type CompositeTick = (astTicks: Tick[]) => Tick
+
+function getActionTick(id: number): ActionTick {
+    return (precondition, procedure, parameters = {}, ticksRequired = 1) => {
+        return (blackboard) => {
             parameters.blackboard = blackboard;
             if (precondition(parameters)) {
                 if (!blackboard[id]) {
                     blackboard[id] = {};
-                    blackboard[id].startTick = blackboard.currentWorldTick;
+                    blackboard[id].ticksDone = ticksRequired;
                 }
 
-                if (blackboard.currentWorldTick - blackboard[id].startTick < ticksRequired) {
+                if (blackboard[id].ticksDone > 0) {
+                    blackboard[id].ticksDone--;
                     return Status.RUNNING;
                 } else {
                     procedure(parameters);
-                    return terminateAndReturn(id, Status.SUCCESS);
+                    return terminateAndReturn(id, blackboard, Status.SUCCESS);
                 }
             } else {
                 return Status.FAILURE;
@@ -34,25 +40,19 @@ function getAction(id) {
     }
 }
 
-function getGuardTick(procedure, parameters, astTick, negate) {
-    return function tick(blackboard) {
-        if (debug) console.log("In Guard: " + procedure.name);
-        parameters.blackboard = blackboard;
-        var boolVal = procedure(parameters);
-        if (negate)
-            boolVal = !boolVal;
-        if (boolVal) {
-            return execute(astTick, blackboard);
-        } else {
-            return Status.FAILURE;
+function getGuardTick(): GuardTick {
+    return (precondition, parameters, astTick, negate=false) => {
+        return function tick(blackboard) {
+            parameters.blackboard = blackboard;
+            let proceed = negate ? !precondition(parameters) : precondition;
+            return proceed ? execute(astTick, blackboard) : Status.FAILURE;
         }
     }
 }
 
-function getSequence(id) {
-    return function getSequenceTick(astTicks) {
-        return function tick(blackboard) {
-            if (debug) console.log("In Sequence");
+function getSequenceTick(id: number): CompositeTick {
+    return (astTicks) => {
+        return (blackboard) => {
             if (!blackboard[id]) {
                 blackboard[id] = {};
                 blackboard[id].currentIndex = 0;
@@ -64,19 +64,18 @@ function getSequence(id) {
                 if (childStatus == Status.RUNNING)
                     return Status.RUNNING;
                 else if (childStatus == Status.FAILURE)
-                    return terminateAndReturn(id, Status.FAILURE);
+                    return terminateAndReturn(id, blackboard, Status.FAILURE);
                 else if (childStatus == Status.SUCCESS)
                     blackboard[id].currentIndex += 1;
             }
-            return terminateAndReturn(id, Status.SUCCESS);
+            return terminateAndReturn(id, blackboard, Status.SUCCESS);
         }
     }
 }
 
-function getSelector(id) {
-    return function getSelectorTick(astTicks) {
-        return function tick(blackboard) {
-            if (debug) console.log("In Selector");
+function getSelectorTick(id:number): CompositeTick {
+    return (astTicks) => {
+        return (blackboard) => {
             if (!blackboard[id]) {
                 blackboard[id] = {};
                 blackboard[id].currentIndex = 0;
@@ -88,45 +87,44 @@ function getSelector(id) {
                 if (childStatus == Status.RUNNING)
                     return Status.RUNNING;
                 else if (childStatus == Status.SUCCESS)
-                    return terminateAndReturn(id, Status.SUCCESS);
+                    return terminateAndReturn(id, blackboard, Status.SUCCESS);
                 else if (childStatus == Status.FAILURE)
                     blackboard[id].currentIndex += 1;
             }
-            return terminateAndReturn(id, Status.FAILURE);
+            return terminateAndReturn(id, blackboard, Status.FAILURE);
         }
     }
 }
 
-function execute(astTick, blackboard) {
+function execute(astTick: Tick, blackboard: any) {
     return astTick(blackboard);
 }
 
 var globalIdCounter = 0;
 
-function action(precondition, procedure, params, ticksRequired) {
-    return getAction(globalIdCounter++)(precondition, procedure, params, ticksRequired)
+function action(precondition, procedure, params?, ticksRequired?) {
+    return getActionTick(globalIdCounter++)(precondition, procedure, params, ticksRequired)
 }
 
 function guard(procedure, parameters, astTick) {
-    return getGuardTick(procedure, parameters, astTick);
+    return getGuardTick()(procedure, parameters, astTick);
 }
 
 function neg_guard(procedure, parameters, astTick) {
-    return getGuardTick(procedure, parameters, astTick, true);
+    return getGuardTick()(procedure, parameters, astTick, true);
 }
 
 function sequence(astTicks) {
-    return getSequence(globalIdCounter++)(astTicks);
+    return getSequenceTick(globalIdCounter++)(astTicks);
 }
 
 function selector(astTicks) {
-    return getSelector(globalIdCounter++)(astTicks);
+    return getSelectorTick(globalIdCounter++)(astTicks);
 }
 
 /*----------- ZOMBIE ESCAPE!!! -------------------*/
-
 var world = {};
-var blackboard = {};
+var blackboard :any= {};
 //initial state
 world["connected"] = {
     "Back": ["Warehouse"],
@@ -179,9 +177,8 @@ function eat(params) {
     console.log("Game Over!")
 }
 
-
 //zombie tree
-var zombieTick = selector([
+let zombieTick = selector([
     neg_guard(canEat, {},
         sequence([
             action(canMove, moveTo, {location: "Warehouse"}),
@@ -194,22 +191,18 @@ var zombieTick = selector([
 ]);
 
 //player tree
-var playerTick = sequence([
-        action(canMove, moveTo, {location: "Entrance"}),
-        action(canMove, moveTo, {location: "Front"})
-    ]);
+let playerTick = sequence([
+    action(canMove, moveTo, {location: "Entrance"}),
+    action(canMove, moveTo, {location: "Front"})
+]);
 
 //stranger tree
-var strangerTick = sequence([
+let strangerTick = sequence([
     action(canMove, moveTo, {location: "Side"})
 ]);
 
-blackboard.currentWorldTick = 0;
 
 function worldTick() {
-    blackboard.currentWorldTick += 1;
-
-    console.log("Current world tick: " + blackboard.currentWorldTick);
     blackboard.agent = "Player";
     console.log(execute(playerTick, blackboard));
     blackboard.agent = "Stranger";
@@ -218,8 +211,7 @@ function worldTick() {
     execute(zombieTick, blackboard);
 }
 
-
-var canvas = document.getElementById('zombie');
+var canvas = <HTMLCanvasElement> document.getElementById('zombie');
 var context = canvas.getContext('2d');
 var coords = {
     "Back": {x: 800, y: 20},
@@ -232,7 +224,7 @@ var coords = {
 canvas.addEventListener("click", this.worldTick.bind(this), false);
 
 function render() {
-    context.width = context.width;
+    context.clearRect(0, 0, canvas.width, canvas.height);
     var map = new Image();
     map.src = "images/zombiemap.png";
     context.drawImage(map, 0, 0, 1185, 825);
