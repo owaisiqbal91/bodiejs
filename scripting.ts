@@ -9,16 +9,26 @@ function terminateAndReturn(id: number, blackboard: any, status: Status) {
     return status;
 }
 
+/**
+ * Primitive function that makes changes to the world state
+ */
 type Procedure = (params: any) => void
 type Precondition = (params: any) => boolean
-type Tick = (blackboard: any) => Status
+type Tick = (agent: string, blackboard: any) => Status
 type ActionTick = (precondition: Precondition, procedure: Procedure, parameters?: any, ticksRequired?: number) => Tick
+/**
+ * This is to add a precondition to the composite ticks
+ */
 type GuardTick = (precondition: Precondition, parameters: any, astTick: Tick, negate?: boolean) => Tick
+/**
+ * Sequence/Selector
+ */
 type CompositeTick = (astTicks: Tick[]) => Tick
 
 function getActionTick(id: number): ActionTick {
     return (precondition, procedure, parameters = {}, ticksRequired = 1) => {
-        return (blackboard) => {
+        return (agent, blackboard) => {
+            parameters.agent = agent;
             parameters.blackboard = blackboard;
             if (precondition(parameters)) {
                 if (!blackboard[id]) {
@@ -42,24 +52,25 @@ function getActionTick(id: number): ActionTick {
 
 function getGuardTick(): GuardTick {
     return (precondition, parameters, astTick, negate=false) => {
-        return function tick(blackboard) {
+        return (agent, blackboard) => {
+            parameters.agent = agent;
             parameters.blackboard = blackboard;
             let proceed = negate ? !precondition(parameters) : precondition;
-            return proceed ? execute(astTick, blackboard) : Status.FAILURE;
+            return proceed ? execute(astTick, agent, blackboard) : Status.FAILURE;
         }
     }
 }
 
 function getSequenceTick(id: number): CompositeTick {
     return (astTicks) => {
-        return (blackboard) => {
+        return (agent, blackboard) => {
             if (!blackboard[id]) {
                 blackboard[id] = {};
                 blackboard[id].currentIndex = 0;
             }
 
             while (blackboard[id].currentIndex < astTicks.length) {
-                var childStatus = execute(astTicks[blackboard[id].currentIndex], blackboard);
+                var childStatus = execute(astTicks[blackboard[id].currentIndex], agent, blackboard);
 
                 if (childStatus == Status.RUNNING)
                     return Status.RUNNING;
@@ -75,14 +86,14 @@ function getSequenceTick(id: number): CompositeTick {
 
 function getSelectorTick(id:number): CompositeTick {
     return (astTicks) => {
-        return (blackboard) => {
+        return (agent, blackboard) => {
             if (!blackboard[id]) {
                 blackboard[id] = {};
                 blackboard[id].currentIndex = 0;
             }
 
             while (blackboard[id].currentIndex < astTicks.length) {
-                var childStatus = execute(astTicks[blackboard[id].currentIndex], blackboard);
+                var childStatus = execute(astTicks[blackboard[id].currentIndex], agent, blackboard);
 
                 if (childStatus == Status.RUNNING)
                     return Status.RUNNING;
@@ -96,29 +107,41 @@ function getSelectorTick(id:number): CompositeTick {
     }
 }
 
-function execute(astTick: Tick, blackboard: any) {
-    return astTick(blackboard);
+function execute(astTick: Tick, agent: string, blackboard: any): Status {
+    return astTick(agent, blackboard);
 }
 
 var globalIdCounter = 0;
 
-function action(precondition, procedure, params?, ticksRequired?) {
+function action(precondition:Precondition, procedure:Procedure, params?:any, ticksRequired?:number) {
     return getActionTick(globalIdCounter++)(precondition, procedure, params, ticksRequired)
 }
 
-function guard(procedure, parameters, astTick) {
-    return getGuardTick()(procedure, parameters, astTick);
+function guard(procedure:Precondition, params:any, astTick:Tick) {
+    return getGuardTick()(procedure, params, astTick);
 }
 
-function neg_guard(procedure, parameters, astTick) {
-    return getGuardTick()(procedure, parameters, astTick, true);
+function neg_guard(procedure:Precondition, params:any, astTick:Tick) {
+    return getGuardTick()(procedure, params, astTick, true);
 }
 
-function sequence(astTicks) {
+/**
+ * Cycles over its children: iterates to the next child on success of a child
+ * Succeeds if all succeed, else fails
+ * @param {Tick[]} astTicks
+ * @returns {Tick}
+ */
+function sequence(astTicks:Tick[]) {
     return getSequenceTick(globalIdCounter++)(astTicks);
 }
 
-function selector(astTicks) {
+/**
+ * Cycles over its children: iterates to the next child on failure of a child(think of it as if-else blocks)
+ * Succeeds if even one succeeds, else fails
+ * @param {Tick[]} astTicks
+ * @returns {Tick}
+ */
+function selector(astTicks:Tick[]) {
     return getSelectorTick(globalIdCounter++)(astTicks);
 }
 
@@ -158,22 +181,23 @@ function goalState() {
     return world["escape"] === ["Player", "Stranger"];
 }
 
-function canMove(params) {
-    var agent = params.blackboard.agent;
+var canMove:Precondition = (params) => {
+    var agent = params.agent;
     var currentLocation = world["at"][agent];
     var destination = params.location;
-    return currentLocation === destination
+    var result:boolean =  currentLocation === destination
         || world["connected"][currentLocation].includes(destination);
+    return result;
+};
+var move:Procedure = (params:any) => {
+    console.log(params.agent + " moves to " + params.location);
+    world["at"][params.agent] = params.location;
 }
-function moveTo(params) {
-    console.log(params.blackboard.agent + " moves to " + params.location);
-    world["at"][params.blackboard.agent] = params.location;
+var canEat:Precondition = (params) => {
+    return world["at"][params.agent] === world["at"]["Stranger"]
+        || world["at"][params.agent] === world["at"]["Player"]
 }
-function canEat(params) {
-    return world["at"][params.blackboard.agent] === world["at"]["Stranger"]
-        || world["at"][params.blackboard.agent] === world["at"]["Player"]
-}
-function eat(params) {
+var eat:Procedure = (params) => {
     console.log("Game Over!")
 }
 
@@ -181,34 +205,29 @@ function eat(params) {
 let zombieTick = selector([
     neg_guard(canEat, {},
         sequence([
-            action(canMove, moveTo, {location: "Warehouse"}),
-            action(canMove, moveTo, {location: "Entrance"})
+            action(canMove, move, {location: "Warehouse"}),
+            action(canMove, move, {location: "Entrance"})
         ])
     ),
-    guard(canEat, {},
-        action(eat, 0)
-    )
+    action(canEat, eat, {}, 0)
 ]);
 
 //player tree
 let playerTick = sequence([
-    action(canMove, moveTo, {location: "Entrance"}),
-    action(canMove, moveTo, {location: "Front"})
+    action(canMove, move, {location: "Entrance"}),
+    action(canMove, move, {location: "Front"})
 ]);
 
 //stranger tree
 let strangerTick = sequence([
-    action(canMove, moveTo, {location: "Side"})
+    action(canMove, move, {location: "Side"})
 ]);
 
 
 function worldTick() {
-    blackboard.agent = "Player";
-    console.log(execute(playerTick, blackboard));
-    blackboard.agent = "Stranger";
-    execute(strangerTick, blackboard);
-    blackboard.agent = "Zombie";
-    execute(zombieTick, blackboard);
+    execute(playerTick, "Player", blackboard);
+    execute(strangerTick, "Stranger", blackboard);
+    execute(zombieTick, "Zombie", blackboard);
 }
 
 var canvas = <HTMLCanvasElement> document.getElementById('zombie');
