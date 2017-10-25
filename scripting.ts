@@ -9,15 +9,12 @@ function terminateAndReturn(id: number, blackboard: any, status: Status) {
     return status;
 }
 
-/**
- * Primitive function that makes changes to the world state
- */
-type Procedure = (params: any) => void
+type Effect = (params: any) => void
 type Precondition = (params: any) => boolean
 type Tick = (agent: string, blackboard: any) => Status
-type ActionTick = (precondition: Precondition, procedure: Procedure, parameters?: any, ticksRequired?: number) => Tick
+type ActionTick = (precondition: Precondition, effect: Effect, parameters?: any, ticksRequired?: number) => Tick
 /**
- * This is to add a precondition to the composite ticks
+ * The guard tick is to add a precondition to the composite ticks
  */
 type GuardTick = (precondition: Precondition, parameters: any, astTick: Tick, negate?: boolean) => Tick
 /**
@@ -26,7 +23,7 @@ type GuardTick = (precondition: Precondition, parameters: any, astTick: Tick, ne
 type CompositeTick = (astTicks: Tick[]) => Tick
 
 function getActionTick(id: number): ActionTick {
-    return (precondition, procedure, parameters = {}, ticksRequired = 1) => {
+    return (precondition, effect, parameters = {}, ticksRequired = 1) => {
         return (agent, blackboard) => {
             parameters.agent = agent;
             parameters.blackboard = blackboard;
@@ -40,7 +37,7 @@ function getActionTick(id: number): ActionTick {
                     blackboard[id].ticksDone--;
                     return Status.RUNNING;
                 } else {
-                    procedure(parameters);
+                    effect(parameters);
                     return terminateAndReturn(id, blackboard, Status.SUCCESS);
                 }
             } else {
@@ -113,16 +110,16 @@ function execute(astTick: Tick, agent: string, blackboard: any): Status {
 
 var globalIdCounter = 0;
 
-function action(precondition:Precondition, procedure:Procedure, params?:any, ticksRequired?:number) {
-    return getActionTick(globalIdCounter++)(precondition, procedure, params, ticksRequired)
+function action(precondition:Precondition, effect:Effect, params?:any, ticksRequired?:number) {
+    return getActionTick(globalIdCounter++)(precondition, effect, params, ticksRequired)
 }
 
-function guard(procedure:Precondition, params:any, astTick:Tick) {
-    return getGuardTick()(procedure, params, astTick);
+function guard(effect:Precondition, params:any, astTick:Tick) {
+    return getGuardTick()(effect, params, astTick);
 }
 
-function neg_guard(procedure:Precondition, params:any, astTick:Tick) {
-    return getGuardTick()(procedure, params, astTick, true);
+function neg_guard(effect:Precondition, params:any, astTick:Tick) {
+    return getGuardTick()(effect, params, astTick, true);
 }
 
 /**
@@ -189,7 +186,7 @@ var canMove:Precondition = (params) => {
         || world["connected"][currentLocation].includes(destination);
     return result;
 };
-var move:Procedure = (params:any) => {
+var move:Effect = (params) => {
     console.log(params.agent + " moves to " + params.location);
     world["at"][params.agent] = params.location;
 }
@@ -197,7 +194,7 @@ var canEat:Precondition = (params) => {
     return world["at"][params.agent] === world["at"]["Stranger"]
         || world["at"][params.agent] === world["at"]["Player"]
 }
-var eat:Procedure = (params) => {
+var eat:Effect = (params) => {
     console.log("Game Over!")
 }
 

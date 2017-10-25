@@ -81,9 +81,9 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_scripting_.html#actiontick" class="tsd-kind-icon">Action<wbr>Tick</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_scripting_.html#compositetick" class="tsd-kind-icon">Composite<wbr>Tick</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_scripting_.html#effect" class="tsd-kind-icon">Effect</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_scripting_.html#guardtick" class="tsd-kind-icon">Guard<wbr>Tick</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_scripting_.html#precondition" class="tsd-kind-icon">Precondition</a></li>
-								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_scripting_.html#procedure" class="tsd-kind-icon">Procedure</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_scripting_.html#tick" class="tsd-kind-icon">Tick</a></li>
 							</ul>
 						</section>
@@ -140,7 +140,7 @@
 					<div class="tsd-signature tsd-kind-icon">Action<wbr>Tick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L18">scripting.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L15">scripting.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -148,7 +148,7 @@
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>precondition<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a>, procedure<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#procedure" class="tsd-signature-type">Procedure</a>, parameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, ticksRequired<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_scripting_.html#tick" class="tsd-signature-type">Tick</a></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>precondition<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a>, effect<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#effect" class="tsd-signature-type">Effect</a>, parameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, ticksRequired<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_scripting_.html#tick" class="tsd-signature-type">Tick</a></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
@@ -158,7 +158,7 @@
 												<h5>precondition: <a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a></h5>
 											</li>
 											<li>
-												<h5>procedure: <a href="_scripting_.html#procedure" class="tsd-signature-type">Procedure</a></h5>
+												<h5>effect: <a href="_scripting_.html#effect" class="tsd-signature-type">Effect</a></h5>
 											</li>
 											<li>
 												<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameters: <span class="tsd-signature-type">any</span></h5>
@@ -180,7 +180,7 @@
 					<div class="tsd-signature tsd-kind-icon">Composite<wbr>Tick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L26">scripting.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L23">scripting.ts:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -211,17 +211,48 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="effect" class="tsd-anchor"></a>
+					<h3>Effect</h3>
+					<div class="tsd-signature tsd-kind-icon">Effect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L12">scripting.ts:12</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>params: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="guardtick" class="tsd-anchor"></a>
 					<h3>Guard<wbr>Tick</h3>
 					<div class="tsd-signature tsd-kind-icon">Guard<wbr>Tick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L22">scripting.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L19">scripting.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>This is to add a precondition to the composite ticks</p>
+							<p>The guard tick is to add a precondition to the composite ticks</p>
 						</div>
 					</div>
 					<div class="tsd-type-declaration">
@@ -261,7 +292,7 @@
 					<div class="tsd-signature tsd-kind-icon">Precondition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L16">scripting.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L13">scripting.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -287,48 +318,12 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="procedure" class="tsd-anchor"></a>
-					<h3>Procedure</h3>
-					<div class="tsd-signature tsd-kind-icon">Procedure<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L15">scripting.ts:15</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Primitive function that makes changes to the world state</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>params: <span class="tsd-signature-type">any</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="tick" class="tsd-anchor"></a>
 					<h3>Tick</h3>
 					<div class="tsd-signature tsd-kind-icon">Tick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L17">scripting.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L14">scripting.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -365,7 +360,7 @@
 					<div class="tsd-signature tsd-kind-icon">blackboard<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L150">scripting.ts:150</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L147">scripting.ts:147</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -375,7 +370,7 @@
 					<div class="tsd-signature tsd-kind-icon">canvas<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLCanvasElement</span><span class="tsd-signature-symbol"> =&nbsp;&lt;HTMLCanvasElement&gt; document.getElementById(&#x27;zombie&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L233">scripting.ts:233</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L230">scripting.ts:230</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -385,7 +380,7 @@
 					<div class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">CanvasRenderingContext2D</span><span class="tsd-signature-symbol"> =&nbsp;canvas.getContext(&#x27;2d&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L234">scripting.ts:234</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L231">scripting.ts:231</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -395,7 +390,7 @@
 					<div class="tsd-signature tsd-kind-icon">global<wbr>IdCounter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L114">scripting.ts:114</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L111">scripting.ts:111</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -405,7 +400,7 @@
 					<div class="tsd-signature tsd-kind-icon">player<wbr>Tick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;sequence([action(canMove, move, {location: &quot;Entrance&quot;}),action(canMove, move, {location: &quot;Front&quot;})])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L216">scripting.ts:216</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L213">scripting.ts:213</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -439,7 +434,7 @@
 					<div class="tsd-signature tsd-kind-icon">stranger<wbr>Tick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;sequence([action(canMove, move, {location: &quot;Side&quot;})])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L222">scripting.ts:222</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L219">scripting.ts:219</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -473,7 +468,7 @@
 					<div class="tsd-signature tsd-kind-icon">world<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L149">scripting.ts:149</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L146">scripting.ts:146</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -488,7 +483,7 @@
 					<div class="tsd-signature tsd-kind-icon">zombie<wbr>Tick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;selector([neg_guard(canEat, {},sequence([action(canMove, move, {location: &quot;Warehouse&quot;}),action(canMove, move, {location: &quot;Entrance&quot;})])),action(canEat, eat, {}, 0)])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L205">scripting.ts:205</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L202">scripting.ts:202</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -523,13 +518,13 @@
 					<a name="action" class="tsd-anchor"></a>
 					<h3>action</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span>precondition<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a>, procedure<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#procedure" class="tsd-signature-type">Procedure</a>, params<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, ticksRequired<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span>precondition<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a>, effect<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#effect" class="tsd-signature-type">Effect</a>, params<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, ticksRequired<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L116">scripting.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L113">scripting.ts:113</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -538,7 +533,7 @@
 									<h5>precondition: <a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a></h5>
 								</li>
 								<li>
-									<h5>procedure: <a href="_scripting_.html#procedure" class="tsd-signature-type">Procedure</a></h5>
+									<h5>effect: <a href="_scripting_.html#effect" class="tsd-signature-type">Effect</a></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> params: <span class="tsd-signature-type">any</span></h5>
@@ -582,7 +577,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L196">scripting.ts:196</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L193">scripting.ts:193</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -605,7 +600,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L184">scripting.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L181">scripting.ts:181</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -628,7 +623,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L200">scripting.ts:200</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L197">scripting.ts:197</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -651,7 +646,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L110">scripting.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L107">scripting.ts:107</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -680,7 +675,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L28">scripting.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L25">scripting.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -703,7 +698,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L53">scripting.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L50">scripting.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_scripting_.html#guardtick" class="tsd-signature-type">GuardTick</a></h4>
@@ -720,7 +715,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L87">scripting.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L84">scripting.ts:84</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -743,7 +738,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L64">scripting.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L61">scripting.ts:61</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -766,7 +761,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L180">scripting.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L177">scripting.ts:177</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -777,19 +772,19 @@
 					<a name="guard" class="tsd-anchor"></a>
 					<h3>guard</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">guard<span class="tsd-signature-symbol">(</span>procedure<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a>, params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, astTick<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#tick" class="tsd-signature-type">Tick</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+						<li class="tsd-signature tsd-kind-icon">guard<span class="tsd-signature-symbol">(</span>effect<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a>, params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, astTick<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#tick" class="tsd-signature-type">Tick</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L120">scripting.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L117">scripting.ts:117</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>procedure: <a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a></h5>
+									<h5>effect: <a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a></h5>
 								</li>
 								<li>
 									<h5>params: <span class="tsd-signature-type">any</span></h5>
@@ -833,7 +828,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L192">scripting.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L189">scripting.ts:189</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -850,19 +845,19 @@
 					<a name="neg_guard" class="tsd-anchor"></a>
 					<h3>neg_<wbr>guard</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">neg_<wbr>guard<span class="tsd-signature-symbol">(</span>procedure<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a>, params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, astTick<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#tick" class="tsd-signature-type">Tick</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+						<li class="tsd-signature tsd-kind-icon">neg_<wbr>guard<span class="tsd-signature-symbol">(</span>effect<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a>, params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, astTick<span class="tsd-signature-symbol">: </span><a href="_scripting_.html#tick" class="tsd-signature-type">Tick</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L124">scripting.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L121">scripting.ts:121</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>procedure: <a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a></h5>
+									<h5>effect: <a href="_scripting_.html#precondition" class="tsd-signature-type">Precondition</a></h5>
 								</li>
 								<li>
 									<h5>params: <span class="tsd-signature-type">any</span></h5>
@@ -906,7 +901,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L245">scripting.ts:245</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L242">scripting.ts:242</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -923,7 +918,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L144">scripting.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L141">scripting.ts:141</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -973,7 +968,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L134">scripting.ts:134</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L131">scripting.ts:131</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1023,7 +1018,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L7">scripting.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L7">scripting.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1052,7 +1047,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L227">scripting.ts:227</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L224">scripting.ts:224</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1068,7 +1063,7 @@
 					<div class="tsd-signature tsd-kind-icon">coords<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L235">scripting.ts:235</a></li>
+							<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L232">scripting.ts:232</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -1077,7 +1072,7 @@
 						<div class="tsd-signature tsd-kind-icon">Back<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L236">scripting.ts:236</a></li>
+								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L233">scripting.ts:233</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -1086,7 +1081,7 @@
 							<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;800</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L236">scripting.ts:236</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L233">scripting.ts:233</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1096,7 +1091,7 @@
 							<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;20</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L236">scripting.ts:236</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L233">scripting.ts:233</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1107,7 +1102,7 @@
 						<div class="tsd-signature tsd-kind-icon">Entrance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L238">scripting.ts:238</a></li>
+								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L235">scripting.ts:235</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -1116,7 +1111,7 @@
 							<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;800</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L238">scripting.ts:238</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L235">scripting.ts:235</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1126,7 +1121,7 @@
 							<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;420</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L238">scripting.ts:238</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L235">scripting.ts:235</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1137,7 +1132,7 @@
 						<div class="tsd-signature tsd-kind-icon">Front<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L239">scripting.ts:239</a></li>
+								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L236">scripting.ts:236</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -1146,7 +1141,7 @@
 							<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1000</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L239">scripting.ts:239</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L236">scripting.ts:236</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1156,7 +1151,7 @@
 							<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;620</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L239">scripting.ts:239</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L236">scripting.ts:236</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1167,7 +1162,7 @@
 						<div class="tsd-signature tsd-kind-icon">Side<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L240">scripting.ts:240</a></li>
+								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L237">scripting.ts:237</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -1176,7 +1171,7 @@
 							<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;300</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L240">scripting.ts:240</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L237">scripting.ts:237</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1186,7 +1181,7 @@
 							<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;620</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L240">scripting.ts:240</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L237">scripting.ts:237</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1197,7 +1192,7 @@
 						<div class="tsd-signature tsd-kind-icon">Warehouse<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L237">scripting.ts:237</a></li>
+								<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L234">scripting.ts:234</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -1206,7 +1201,7 @@
 							<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;800</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L237">scripting.ts:237</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L234">scripting.ts:234</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1216,7 +1211,7 @@
 							<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;220</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/ed4d4cc/scripting.ts#L237">scripting.ts:237</a></li>
+									<li>Defined in <a href="https://github.com/owaisiqbal91/bodiejs/blob/9a6ea19/scripting.ts#L234">scripting.ts:234</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -1247,13 +1242,13 @@
 						<a href="_scripting_.html#compositetick" class="tsd-kind-icon">Composite<wbr>Tick</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_scripting_.html#effect" class="tsd-kind-icon">Effect</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_scripting_.html#guardtick" class="tsd-kind-icon">Guard<wbr>Tick</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_scripting_.html#precondition" class="tsd-kind-icon">Precondition</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_scripting_.html#procedure" class="tsd-kind-icon">Procedure</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_scripting_.html#tick" class="tsd-kind-icon">Tick</a>
